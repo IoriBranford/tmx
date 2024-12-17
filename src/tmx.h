@@ -453,7 +453,8 @@ typedef enum _tmx_error_codes {
 	E_XDATA  = 22,    /* XML corrupted data */
 	E_ZSDATA = 23,    /* Zstd corrupted data */
 	E_CDATA  = 24,    /* CSV corrupted data */
-	E_MISSEL = 30     /* Missing element, incomplete source */
+	E_MISSEL = 30,    /* Missing element, incomplete source */
+	E_RANGE	 = 40	  /* Math result not representable */
 } tmx_error_codes;
 
 extern tmx_error_codes tmx_errno;
