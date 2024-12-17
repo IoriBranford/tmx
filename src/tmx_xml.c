@@ -362,7 +362,7 @@ static int parse_object(xmlTextReaderPtr reader, tmx_object *obj, int is_on_map,
 		while (digit != value) {
 			--digit;
 			if (!isdigit(*digit)) {
-				tmx_err(ERANGE, "xml parser: corrupt gid - non-digit character");
+				tmx_err(ERANGE, "xml parser: object %u has bad gid '%s' - non-digit character", obj->id, value);
 				tmx_free_func(value);
 				return 0;
 			}
@@ -370,7 +370,7 @@ static int parse_object(xmlTextReaderPtr reader, tmx_object *obj, int is_on_map,
 			uint32_t digitValue = (uint32_t)(*digit - '0') * pow10;
 			if (gid + digitValue < gid
 			|| pow10 * 10 < pow10 && digit != value) {
-				tmx_err(ERANGE, "xml parser: corrupt gid - out of range");
+				tmx_err(ERANGE, "xml parser: object %u has bad gid '%s' - out of range", obj->id, value);
 				tmx_free_func(value);
 				return 0;
 			}
