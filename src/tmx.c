@@ -12,6 +12,8 @@ void* (*tmx_alloc_func) (void *address, size_t len) = NULL;
 void  (*tmx_free_func ) (void *address) = NULL;
 void* (*tmx_img_load_func) (const char *p) = NULL;
 void  (*tmx_img_free_func) (void *address) = NULL;
+void* (*tmx_font_load_func) (const char *p, tmx_text *text) = NULL;
+void  (*tmx_font_free_func) (void *address) = NULL;
 
 /*
 	Public functions

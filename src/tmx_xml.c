@@ -193,7 +193,7 @@ static int parse_points(xmlTextReaderPtr reader, tmx_shape *shape) {
 	return 1;
 }
 
-static int parse_text(xmlTextReaderPtr reader, tmx_text *text) {
+static int parse_text(xmlTextReaderPtr reader, tmx_text *text, const char *filename) {
 	char *value;
 
 	if ((value = (char*)xmlTextReaderGetAttribute(reader, (xmlChar*)"fontfamily"))) { /* fontfamily */
@@ -254,6 +254,11 @@ static int parse_text(xmlTextReaderPtr reader, tmx_text *text) {
 
 	if ((value = (char*)xmlTextReaderReadInnerXml(reader))) {
 		text->text = value;
+	}
+
+	if (!(load_font(&(text->resource_font), filename, text))) {
+		tmx_err(E_UNKN, "xml parser: an error occured in the delegated font loading function");
+		return 0;
 	}
 
 	return 1;
@@ -416,7 +421,7 @@ static int parse_object(xmlTextReaderPtr reader, tmx_object *obj, int is_on_map,
 					}
 					else if (obj->obj_type == OT_TEXT) {
 						if (obj->content.text = alloc_text(), !(obj->content.text)) return 0;
-						if (!parse_text(reader, obj->content.text)) return 0;
+						if (!parse_text(reader, obj->content.text, filename)) return 0;
 					}
 				}
 			}

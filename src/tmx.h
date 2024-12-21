@@ -42,6 +42,13 @@ TMXEXPORT extern void  (*tmx_free_func ) (void *address);             /* free */
 TMXEXPORT extern void* (*tmx_img_load_func) (const char *path);
 TMXEXPORT extern void  (*tmx_img_free_func) (void *address);
 
+typedef struct _tmx_text tmx_text;
+
+/* load/free tmx_text->resource_font, you should set this if you want
+   the library to load/free fonts */
+TMXEXPORT extern void* (*tmx_font_load_func) (const char *dirPath, tmx_text *text);
+TMXEXPORT extern void  (*tmx_font_free_func) (void *address);
+
 /*
 	Data Structures
 */
@@ -182,6 +189,8 @@ struct _tmx_text { /* <text> */
 	enum tmx_vertical_align valign;
 
 	char *text;
+
+	void *resource_font;
 };
 
 struct _tmx_obj { /* <object> */

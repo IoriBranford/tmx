@@ -158,6 +158,9 @@ void free_obj(tmx_object *o) {
 			if (o->content.text) {
 				if (o->content.text->fontfamily) tmx_free_func(o->content.text->fontfamily);
 				if (o->content.text->text) tmx_free_func(o->content.text->text);
+				if (o->content.text->resource_font && tmx_font_free_func) {
+					tmx_font_free_func(o->content.text->resource_font);
+				}
 				tmx_free_func(o->content.text);
 			}
 		}

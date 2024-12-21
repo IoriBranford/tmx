@@ -731,6 +731,19 @@ void* load_image(void **ptr, const char *base_path, const char *rel_path) {
 	return (void*)1;
 }
 
+/* resolves the path to the image, and delegates to the client code */
+void* load_font(void **ptr, const char *base_path, tmx_text *text) {
+	char *dir;
+	if (tmx_font_load_func) {
+		dir = mk_absolute_path(base_path, "");
+		if (!dir) return 0;
+		*ptr = tmx_font_load_func(dir, text);
+		tmx_free_func(dir);
+		return(*ptr);
+	}
+	return (void*)1;
+}
+
 /* Resource Manager helper functions */
 int add_tileset(tmx_resource_manager *rc_mgr, const char *key, tmx_tileset *value) {
 	resource_holder *rc_holder;

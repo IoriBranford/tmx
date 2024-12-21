@@ -119,6 +119,7 @@ char* tmx_strdup(const char *str);
 size_t dirpath_len(const char *str);
 char* mk_absolute_path(const char *base_path, const char *rel_path);
 void* load_image(void **ptr, const char *base_path, const char *rel_path);
+void* load_font(void **ptr, const char *base_path, tmx_text *text);
 
 /*
 	Hashtable - tmx_hash.c
