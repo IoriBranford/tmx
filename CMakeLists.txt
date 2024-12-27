@@ -13,6 +13,7 @@ option(WANT_ZLIB "use zlib (ability to decompress layers data) ?" On)
 option(WANT_ZSTD "use zstd (ability to decompress layers data) ?" Off)
 option(BUILD_SHARED_LIBS "Build shared libraries (dll / so)" Off)
 option(ZSTD_PREFER_STATIC "use the static build of zstd ?" On)
+option(INSTALL_TMX "Install tmx library to your system ?" ON)
 
 set(EMSCRIPTEN False)
 if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
@@ -87,22 +88,24 @@ endif()
 
 target_include_directories(tmx INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src> $<INSTALL_INTERFACE:include>)
 
-configure_file("tmxConfig.cmake.in" "tmxConfig.cmake" @ONLY)
+if(${INSTALL_TMX})
+    configure_file("tmxConfig.cmake.in" "tmxConfig.cmake" @ONLY)
 
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file("tmxConfigVersion.cmake" COMPATIBILITY AnyNewerVersion)
+    include(CMakePackageConfigHelpers)
+    write_basic_package_version_file("tmxConfigVersion.cmake" COMPATIBILITY AnyNewerVersion)
 
-include(GNUInstallDirs)
+    include(GNUInstallDirs)
 
-install(TARGETS tmx
-        EXPORT tmx_exports
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+    install(TARGETS tmx
+            EXPORT tmx_exports
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+    install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-install(EXPORT tmx_exports
-        FILE "tmxExports.cmake"
-        DESTINATION "lib/cmake/tmx")
-install(FILES "${CMAKE_BINARY_DIR}/tmxConfig.cmake" "${CMAKE_BINARY_DIR}/tmxConfigVersion.cmake"
-        DESTINATION "lib/cmake/tmx")
+    install(EXPORT tmx_exports
+            FILE "tmxExports.cmake"
+            DESTINATION "lib/cmake/tmx")
+    install(FILES "${CMAKE_BINARY_DIR}/tmxConfig.cmake" "${CMAKE_BINARY_DIR}/tmxConfigVersion.cmake"
+            DESTINATION "lib/cmake/tmx")
+endif()
