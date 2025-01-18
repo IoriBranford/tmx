@@ -192,7 +192,7 @@ struct _tmx_obj { /* <object> */
 	double width, height;
 
 	union {
-		int gid;
+		unsigned int gid;
 		tmx_shape *shape;
 		tmx_text *text;
 	} content;
