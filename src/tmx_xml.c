@@ -359,32 +359,19 @@ static int parse_object(xmlTextReaderPtr reader, tmx_object *obj, int is_on_map,
 	if ((value = (char*)xmlTextReaderGetAttribute(reader, (xmlChar*)"gid"))) { /* gid */
 		obj->obj_type = OT_TILE;
 
-		char *digit = value;
-		while (*digit) ++digit;
-
-		uint32_t gid = 0;
-		uint32_t pow10 = 1;
-		while (digit != value) {
-			--digit;
-			if (!isdigit(*digit)) {
-				tmx_err(E_RANGE, "xml parser: object %u has bad gid '%s' - non-digit character", obj->id, value);
-				tmx_free_func(value);
-				return 0;
-			}
-
-			uint32_t digitValue = (uint32_t)(*digit - '0') * pow10;
-			if (gid + digitValue < gid
-			|| pow10 * 10 < pow10 && digit != value) {
-				tmx_err(E_RANGE, "xml parser: object %u has bad gid '%s' - out of range", obj->id, value);
-				tmx_free_func(value);
-				return 0;
-			}
-
-			gid += digitValue;
-			pow10 *= 10;
+		unsigned long long gid = strtoull(value, NULL, 0);
+		if (!gid) {
+			tmx_err(E_RANGE, "xml parser: object %u has invalid gid '%s'", obj->id, value);
+			tmx_free_func(value);
+			return 0;
+		}
+		if (gid > UINT_MAX) {
+			tmx_err(E_RANGE, "xml parser: object %u has out-of-range gid '%s'", obj->id, value);
+			tmx_free_func(value);
+			return 0;
 		}
 
-		obj->content.gid = gid;
+		obj->content.gid = (unsigned int)gid;
 		tmx_free_func(value);
 	}
 
