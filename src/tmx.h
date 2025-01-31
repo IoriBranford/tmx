@@ -342,6 +342,22 @@ TMXEXPORT tmx_col_bytes tmx_col_to_bytes(uint32_t color);
 TMXEXPORT tmx_col_floats tmx_col_to_floats(uint32_t color);
 
 /*
+	Tile layer operations
+*/
+
+/* Get gid at cell (x, y) in a tile layer */
+TMXEXPORT uint32_t tmx_get_layer_gid(tmx_map *map, tmx_layer *layer, int x, int y);
+
+/* Set gid at cell (x, y) in a tile layer */
+TMXEXPORT void tmx_set_layer_gid(tmx_map *map, tmx_layer *layer, int x, int y, uint32_t gid);
+
+/* Get tile and optionally gid at cell (x, y) in a tile layer */
+TMXEXPORT tmx_tile* tmx_get_layer_tile(tmx_map *map, tmx_layer *layer, int x, int y, uint32_t *outGid);
+
+/* Set tile and flip flags at cell (x, y) in a tile layer */
+TMXEXPORT void tmx_set_layer_tile(tmx_map *map, tmx_layer *layer, int x, int y, tmx_tile *tile, uint32_t flags);
+
+/*
 	Resource Manager functions
 */
 
