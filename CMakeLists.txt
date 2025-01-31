@@ -23,6 +23,7 @@ endif()
 
 add_library(tmx
     "src/tmx.c"
+    "src/tmx_layer.c"
     "src/tmx_utils.c"
     "src/tmx_err.c"
     "src/tmx_xml.c"
